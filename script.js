@@ -36,11 +36,6 @@ let startPageTemplate = `
     </article>
 `;
 
-let userPageTemplate = `
-        <h5>Du är inloggad på Kundklubben!</h5> 
-        <p>Här kan du ändra ditt prenumerationsstatus.</p>
-    `;
-
 const logOutBtnTemplate = `<button id="logOutBtn">Logga ut</button>`;
 
 //Om localStorage är tomt visas StartPage. Om den inte är tom visas UserPage.
@@ -73,7 +68,7 @@ function printStartPage() {
 
         loginMsgContainer.innerHTML = ""; 
 
-        let newUser = {userName: registerUserName.value, password: registerPassword.value};
+        let newUser = {userName: registerUserName.value, password: registerPassword.value, subscription: false};
         console.log("newUser", newUser);
 
         if ( (registerUserName.value !== "") && (registerPassword.value !== "") ) {
@@ -125,20 +120,38 @@ function printStartPage() {
             })
             .then(res => res.json())
             .then(function(res) {
-                // console.log("res", res);
+                console.log("res", res);
                 console.log("res.id", res.id);
+                console.log("res.subscription", res.subscription);
 
                 if (res.id !== undefined) {
 
                     console.log("Login sucess - save id to lS");
                     localStorage.setItem("id", res.id);
-                    printUserPage();
+                    
+                    let subscriptionStatus;
+
+                    if (res.subscription === true) {
+                        subscriptionStatus = "Du prenumererar";
+                        localStorage.setItem("subscription", subscriptionStatus);
+                        console.log(subscriptionStatus);
+                        
+                    } else {
+                        subscriptionStatus = "Du prenumererar inte";
+                        console.log(subscriptionStatus);
+                        localStorage.setItem("subscription", subscriptionStatus);
+
+                    }
+                    printUserPage(subscriptionStatus);
+                    
 
                 } else {
                     
                     console.log("Login fail - show error");
                     printErrorMsg(loginMsgContainer)
                 }
+
+                
 
             }); 
 
@@ -175,8 +188,15 @@ function printRegisterFail() {
 
 };
 
-function printUserPage() {
+function printUserPage(subscriptionStatus) {
+    let getSubscriptionStatus = localStorage.getItem("subscription");
+    console.log(getSubscriptionStatus);
 
+    let userPageTemplate = `
+        <h5>Du är inloggad på Kundklubben!</h5> 
+        <p>${getSubscriptionStatus} på nyhetsbrevet.</p>
+    `;
+    
     articleContainer.innerHTML = userPageTemplate;
     sectionContainer.innerHTML = logOutBtnTemplate;
 
@@ -185,7 +205,7 @@ function printUserPage() {
     logOutBtn.addEventListener("click", function() {
         console.log("klick logout");
         localStorage.removeItem("id"); 
-        // location.reload(); 
+        localStorage.removeItem("subscription"); 
         printStartPage();
     })
 };
