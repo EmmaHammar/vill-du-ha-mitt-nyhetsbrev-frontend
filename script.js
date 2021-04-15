@@ -1,5 +1,6 @@
 // const header = document.getElementById("header");
 const sectionContainer = document.getElementById("sectionContainer");
+const articleContainer = document.getElementById("articleContainer");
 
 let loginSectionTemplate = `   
     <section id="loginSection">
@@ -7,7 +8,7 @@ let loginSectionTemplate = `
         <input id="loginUserName" type="text" placeholder="Användarnamn"><br> 
         <input id="loginPassword" type="text" placeholder="Lösenord"><br> 
         <button id="loginBtn">Logga in</button>
-        <div id="loginMsg"></div>
+        <div id="loginMsgContainer"></div>
     </section>
 `;
 
@@ -17,113 +18,143 @@ let registerSectionTemplate = `
         <input id="registerUserName" type="text" placeholder="Användarnamn"><br> 
         <input id="registerPassword" type="text" placeholder="Lösenord"><br> 
         <button id="registerBtn">Registrera dig</button>
-        <div id="registerMsg"></div>
+        <div id="registerMsgContainer"></div>
     </section>
 `;
 
-sectionContainer.insertAdjacentHTML("afterbegin", loginSectionTemplate + registerSectionTemplate);
+let startPageTemplate = `
+    <article>
+        <h2>Välkommen till Kundklubben!</h2>
+        <p>Här kan du logga in för att ändra din prenumerationsstatus.</p>
+    </article>
 
-let registerUserName = document.getElementById("registerUserName");
-let registerPassword = document.getElementById("registerPassword");
-let registerBtn = document.getElementById("registerBtn");
-let registerMsg = document.getElementById("registerMsg");
+    <article>
+        <h3>Om oss</h3>
+        <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates aspernatur voluptate, tenetur eveniet earum necessitatibus ipsum possimus. Autem aut error illum assumenda quod molestias, nisi aperiam nemo. Itaque, labore sint.
+        </p>
+    </article>
+`;
 
-let loginUserName = document.getElementById("loginUserName");
-let loginPassword = document.getElementById("loginPassword");
-let loginBtn = document.getElementById("loginBtn");
-let loginMsg = document.getElementById("loginMsg");
+let userPageTemplate = `
+        <h5>Du är inloggad på Kundklubben!</h5> 
+        <p>Här kan du ändra ditt prenumerationsstatus.</p>
+    `;
 
+const logOutBtnTemplate = `<button id="logOutBtn">Logga ut</button>`;
 
+//Om localStorage är tomt visas StartPage. Om den inte är tom visas UserPage.
+if (localStorage.getItem("id") === null) {
+    console.log("ingen är inloggad");
+    printStartPage();
 
-//registrera ny användare (identifieras genom randomiserad nyckel)
-registerBtn.addEventListener("click", function() {
-    // console.log("registerUserName.value", registerUserName.value);
-    // console.log("registerPassword.value", registerPassword.value);
+} else {
+    console.log("någon är inloggad");
+    printUserPage();
+};
 
-    loginMsg.innerHTML = ""; 
+function printStartPage() {
+    sectionContainer.innerHTML = loginSectionTemplate + registerSectionTemplate;
+    articleContainer.insertAdjacentHTML("afterbegin", startPageTemplate);
 
-    let newUser = {userName: registerUserName.value, password: registerPassword.value};
-    console.log("newUser", newUser);
+    let loginUserName = document.getElementById("loginUserName");
+    let loginPassword = document.getElementById("loginPassword");
+    let loginBtn = document.getElementById("loginBtn");
+    let loginMsgContainer = document.getElementById("loginMsgContainer");
+    let registerUserName = document.getElementById("registerUserName");
+    let registerPassword = document.getElementById("registerPassword");
+    let registerBtn = document.getElementById("registerBtn");
+    let registerMsgContainer = document.getElementById("registerMsgContainer");
 
-    if ( (registerUserName.value !== "") && (registerPassword.value !== "") ) {
-        console.log("fetcha");
-        fetch('http://localhost:3000/users/register', {
+    //registrera ny användare (identifieras genom randomiserad nyckel)
+    registerBtn.addEventListener("click", function() {
+        // console.log("registerUserName.value", registerUserName.value);
+        // console.log("registerPassword.value", registerPassword.value);
 
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newUser)
-        })
-        .then(res => res.json())
-        .then(function(res) {
-            console.log(res);
-            if (res === "newUser saved") {
-                printRegisterSuccess();
-            }
-            if (res === "userName already exists") {
-                printRegisterFail();
-            }
-        });
-    } else {
-        console.log("visa error");
-        printErrorMsg(registerMsg);
-    }
-    
+        loginMsgContainer.innerHTML = ""; 
 
-});
+        let newUser = {userName: registerUserName.value, password: registerPassword.value};
+        console.log("newUser", newUser);
 
-loginBtn.addEventListener("click", function() {
+        if ( (registerUserName.value !== "") && (registerPassword.value !== "") ) {
+            console.log("fetcha");
+            fetch('http://localhost:3000/users/register', {
 
-    registerMsg.innerHTML = ""; 
-    // console.log("klick loginBtn");
-
-    //borde detta vara samma som newUser i registerBtn-listener?
-    let user = {userName: loginUserName.value, password: loginPassword.value};
-    console.log(user);
-
-    if ( (loginUserName.value !== "") && (loginPassword.value !== "") ) {
-        console.log("fetcha");
-
-        fetch('http://localhost:3000/users/login', {
-
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        })
-        .then(res => res.json())
-        .then(function(res) {
-            // console.log("res", res);
-            console.log("res.id", res.id);
-
-            if (res.id !== undefined) {
-                console.log("Login sucess - save id to lS");
-                
-                localStorage.setItem("id", res.id);
-                // printUserPage();
-            } else {
-                //Få denna div att köras
-                console.log("Login fail - show error");
-                //  errorDiv();
-            }
-
-        });
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newUser)
+            })
+            .then(res => res.json())
+            .then(function(res) {
+                console.log(res);
+                if (res === "newUser saved") {
+                    printRegisterSuccess();
+                }
+                if (res === "userName already exists") {
+                    printRegisterFail();
+                }
+            });
+        } else {
+            console.log("visa error");
+            printErrorMsg(registerMsgContainer);
+        }
         
+    });
 
+    loginBtn.addEventListener("click", function() {
 
-    } else {
-        console.log("visa error");
-        printErrorMsg(loginMsg);
-    }
+        registerMsgContainer.innerHTML = ""; 
+        console.log("klick loginBtn");
 
-});
+        //borde detta vara samma som newUser i registerBtn-listener?
+        let user = {userName: loginUserName.value, password: loginPassword.value};
+        console.log(user);
 
-function printErrorMsg(registerMsg) {
+        if ( (loginUserName.value !== "") && (loginPassword.value !== "") ) {
+            console.log("fetcha");
 
-    let errorMsg = `<p>Error, du måste fylla i både användarnamn och lösenord.</p>`;
-    registerMsg.innerHTML = errorMsg;
+            fetch('http://localhost:3000/users/login', {
+
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+            .then(res => res.json())
+            .then(function(res) {
+                // console.log("res", res);
+                console.log("res.id", res.id);
+
+                if (res.id !== undefined) {
+
+                    console.log("Login sucess - save id to lS");
+                    localStorage.setItem("id", res.id);
+                    printUserPage();
+
+                } else {
+                    
+                    console.log("Login fail - show error");
+                    printErrorMsg(loginMsgContainer)
+                }
+
+            }); 
+
+        } else {
+            console.log("visa error");
+            printErrorMsg(loginMsgContainer);
+        }
+
+    });
+
+};
+
+function printErrorMsg(msgContainer) {
+
+    let errorMsg = `<p>Error, du måste fylla i användarnamn och lösenord.</p>`;
+    msgContainer.innerHTML = errorMsg;
 };
 
 function printRegisterSuccess() {
@@ -131,7 +162,7 @@ function printRegisterSuccess() {
     let registerSuccess = `
         <p>Tack för din registrering. Du kan du logga in med dina nya användaruppgifter.</p>
     `;
-    registerMsg.innerHTML = registerSuccess;
+    registerMsgContainer.innerHTML = registerSuccess;
 
 };
 
@@ -140,6 +171,21 @@ function printRegisterFail() {
     let registerFail = `
         <p>Användarnamnet finns redan, pröva med ett annat.</p>
     `;
-    registerMsg.innerHTML = registerFail;
+    registerMsgContainer.innerHTML = registerFail;
 
+};
+
+function printUserPage() {
+
+    articleContainer.innerHTML = userPageTemplate;
+    sectionContainer.innerHTML = logOutBtnTemplate;
+
+    let logOutBtn = document.getElementById("logOutBtn");
+
+    logOutBtn.addEventListener("click", function() {
+        console.log("klick logout");
+        localStorage.removeItem("id"); 
+        // location.reload(); 
+        printStartPage();
+    })
 };

@@ -1,5 +1,7 @@
 $padding: 2.5rem;
 $margin-0: 0;
+$background-color: linen; 
+
 
 body {
     background-image: url("/dist/img/flowers-in-sunset-pexels-david-bartus.jpg");
@@ -30,9 +32,19 @@ header {
     margin-left: 5vw;
 }
 
-#registerMsg, #loginMsg {
+#registerMsgContainer, #loginMsgContainer {
     max-width: 10rem;
 }
+
+button {
+    min-height: 6vh;
+    max-height: 6vh;
+    min-width: 9vw;
+    border-radius: 1rem;
+    margin-top: 1rem;
+    background-color: $background-color;
+}
+
 main {
     padding: $padding;
     font-size: 1.1rem;
@@ -58,7 +70,7 @@ main {
 }
 
 footer {
-    background-color: antiquewhite;
+    background-color: $background-color;
     position: absolute;
     bottom: 0;
     width: 100%;
