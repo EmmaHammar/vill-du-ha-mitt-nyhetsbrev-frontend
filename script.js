@@ -104,6 +104,7 @@ function printStartPage() {
         console.log("klick loginBtn");
 
         //borde detta vara samma som newUser i registerBtn-listener?
+        //köra crypto
         let user = {userName: loginUserName.value, password: loginPassword.value};
         console.log(user);
 
@@ -151,8 +152,6 @@ function printStartPage() {
                     printErrorMsg(loginMsgContainer)
                 }
 
-                
-
             }); 
 
         } else {
@@ -195,12 +194,46 @@ function printUserPage(subscriptionStatus) {
     let userPageTemplate = `
         <h5>Du är inloggad på Kundklubben!</h5> 
         <p>${getSubscriptionStatus} på nyhetsbrevet.</p>
+        <button id="subscriptionBtn">Ändra prenumerationsstatus</button>
     `;
     
     articleContainer.innerHTML = userPageTemplate;
     sectionContainer.innerHTML = logOutBtnTemplate;
 
+    let subscriptionBtn = document.getElementById("subscriptionBtn");
     let logOutBtn = document.getElementById("logOutBtn");
+
+    let getId = localStorage.getItem("id");
+    console.log("getId", getId);
+
+    subscriptionBtn.addEventListener("click", function() {
+        console.log("klick subscriptionBtn");
+        
+        // fetch(`http://localhost:3000/users/subscribe/${getId}`)
+        fetch('http://localhost:3000/users/subscribe/' + getId )
+
+            .then(data => data.json())
+            .then(function(data) {
+                console.log("subscriptionStatus True or False", data);
+
+                // let subscriptionStatusChanged;
+
+                //     if (data.subscription === true) {
+                //         subscriptionStatusChanged = "Du prenumererar";
+                //         localStorage.setItem("subscription", subscriptionStatus);
+                //         console.log(subscriptionStatusChanged);
+                        
+                //     } else {
+                //         subscriptionStatusChanged = "Du prenumererar inte";
+                //         console.log(subscriptionStatusChanged);
+                //         localStorage.setItem("subscription", subscriptionStatus);
+
+                //     }
+                //     printUserPage(subscriptionStatusChanged);
+
+            });
+
+    })
 
     logOutBtn.addEventListener("click", function() {
         console.log("klick logout");
