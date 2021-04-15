@@ -123,27 +123,29 @@ function printStartPage() {
             .then(function(res) {
                 console.log("res", res);
                 console.log("res.id", res.id);
-                console.log("res.subscription", res.subscription);
+                // console.log("res.subscription", res.subscription);
 
                 if (res.id !== undefined) {
 
                     console.log("Login sucess - save id to lS");
                     localStorage.setItem("id", res.id);
                     
-                    let subscriptionStatus;
+                    // let subscriptionStatus;
 
-                    if (res.subscription === true) {
-                        subscriptionStatus = "Du prenumererar";
-                        localStorage.setItem("subscription", subscriptionStatus);
-                        console.log(subscriptionStatus);
+                    // if (res.subscription === true) {
+                    //     subscriptionStatus = "Du prenumererar";
+                    //     localStorage.setItem("subscription", subscriptionStatus);
+                    //     console.log(subscriptionStatus);
                         
-                    } else {
-                        subscriptionStatus = "Du prenumererar inte";
-                        console.log(subscriptionStatus);
-                        localStorage.setItem("subscription", subscriptionStatus);
+                    // } else {
+                    //     subscriptionStatus = "Du prenumererar inte";
+                    //     console.log(subscriptionStatus);
+                    //     localStorage.setItem("subscription", subscriptionStatus);
 
-                    }
-                    printUserPage(subscriptionStatus);
+                    // }
+                    // printUserPage(subscriptionStatus);
+                    printUserPage();
+
                     
 
                 } else {
@@ -187,58 +189,120 @@ function printRegisterFail() {
 
 };
 
-function printUserPage(subscriptionStatus) {
-    let getSubscriptionStatus = localStorage.getItem("subscription");
-    console.log(getSubscriptionStatus);
-
-    let userPageTemplate = `
-        <h5>Du är inloggad på Kundklubben!</h5> 
-        <p>${getSubscriptionStatus} på nyhetsbrevet.</p>
-        <button id="subscriptionBtn">Ändra prenumerationsstatus</button>
-    `;
-    
-    articleContainer.innerHTML = userPageTemplate;
-    sectionContainer.innerHTML = logOutBtnTemplate;
-
-    let subscriptionBtn = document.getElementById("subscriptionBtn");
-    let logOutBtn = document.getElementById("logOutBtn");
-
+function printUserPage(getSubscriptionStatus) {
     let getId = localStorage.getItem("id");
     console.log("getId", getId);
+    
+    fetch('http://localhost:3000/users/userpage/' + getId )
 
-    subscriptionBtn.addEventListener("click", function() {
-        console.log("klick subscriptionBtn");
+    .then(data => data.json())
+    .then(function(data) {
+        console.log(data);
+
+        let userPageTemplate = `
+        <h5>Du är inloggad på Kundklubben!</h5> 
+        <div id="subscribeStatusContainer"></div>
+        <button id="subscriptionBtn">Ändra prenumerationsstatus</button>
+        `;
+
+        articleContainer.innerHTML = userPageTemplate;
+        sectionContainer.innerHTML = logOutBtnTemplate;
+
+        let subscriptionStatus;
+        let subscribeTemplate;
+        let subscribeStatusContainer = document.getElementById("subscribeStatusContainer");
+
+        switch (data) {
+            case true: 
+                subscriptionStatus = "Du prenumererar";
+                console.log("subscriptionStatus from case true", subscriptionStatus);
+                subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+                subscribeStatusContainer.innerHTML = subscribeTemplate;
+                console.log("subscribeStatusContainer", subscribeStatusContainer);
+
+                // localStorage.setItem("subscription");
+
+                break;
+            case false: 
+                subscriptionStatus = "Du prenumererar inte";
+                console.log("subscriptionStatus from case false", subscriptionStatus);
+                subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+                subscribeStatusContainer.innerHTML = subscribeTemplate;
+
+                // localStorage.setItem("subscription");
+
+                break;
+        };
+
+       
+
+   
         
-        // fetch(`http://localhost:3000/users/subscribe/${getId}`)
-        fetch('http://localhost:3000/users/subscribe/' + getId )
+        // getSubscriptionStatus = localStorage.getItem("subscription");
+        // console.log(getSubscriptionStatus);
 
-            .then(data => data.json())
-            .then(function(data) {
-                console.log("subscriptionStatus True or False", data);
+        
 
-                // let subscriptionStatusChanged;
+        // let userPageTemplate = `
+        //     <h5>Du är inloggad på Kundklubben!</h5> 
+        //     <p>${getSubscriptionStatus} på nyhetsbrevet.</p>
+        //     <div id="subscribeStatusContainer"></div>
+        //     <button id="subscriptionBtn">Ändra prenumerationsstatus</button>
+        // `;
 
-                //     if (data.subscription === true) {
-                //         subscriptionStatusChanged = "Du prenumererar";
-                //         localStorage.setItem("subscription", subscriptionStatus);
-                //         console.log(subscriptionStatusChanged);
-                        
-                //     } else {
-                //         subscriptionStatusChanged = "Du prenumererar inte";
-                //         console.log(subscriptionStatusChanged);
-                //         localStorage.setItem("subscription", subscriptionStatus);
+        // subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+        // subscribeStatusContainer.innerHTML = subscribeTemplate;
+        
+       
 
-                //     }
-                //     printUserPage(subscriptionStatusChanged);
+        let subscriptionBtn = document.getElementById("subscriptionBtn");
+        let logOutBtn = document.getElementById("logOutBtn");
 
-            });
+        // let getId = localStorage.getItem("id");
+        // console.log("getId", getId);
 
-    })
+        subscriptionBtn.addEventListener("click", function() {
+            console.log("klick subscriptionBtn");
+            
+            // fetch(`http://localhost:3000/users/subscribe/${getId}`)
+            fetch('http://localhost:3000/users/subscribe/' + getId )
 
-    logOutBtn.addEventListener("click", function() {
-        console.log("klick logout");
-        localStorage.removeItem("id"); 
-        localStorage.removeItem("subscription"); 
-        printStartPage();
-    })
+                .then(data => data.json())
+                .then(function(data) {
+                    console.log("subscriptionStatus True or False", data);
+
+                    let subscribeTemplate;
+                    switch (data) {
+                        case true: 
+                            subscriptionStatus = "Du prenumererar";
+                            console.log("subscriptionStatus from case true", subscriptionStatus);
+                            subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+                            subscribeStatusContainer.innerHTML = subscribeTemplate;
+
+                            // localStorage.setItem("subscription");
+
+                            break;
+                        case false: 
+                            subscriptionStatus = "Du prenumererar inte";
+                            console.log("subscriptionStatus from case false", subscriptionStatus);
+                            subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+                            subscribeStatusContainer.innerHTML = subscribeTemplate;
+
+                            // localStorage.setItem("subscription");
+
+                            break;
+                    };
+                });
+
+        })
+
+        logOutBtn.addEventListener("click", function() {
+            console.log("klick logout");
+            localStorage.removeItem("id"); 
+            // localStorage.removeItem("subscription"); 
+            printStartPage();
+        })
+
+    });
+
 };
