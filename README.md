@@ -36,3 +36,6 @@ Frontend applikationen är deployad på Github pages
 Backend servern är deployad på Heroku
 Databasen är lagrad på MongoDB Atlas
 För att få VG på uppgiften så skall även en skriven reflektion som når upp till kravet av nivå 2 (reflekterande text) lämnas in tillsammans med länkar till repos och projektet/sidan i produktion (live länk).
+
+# img-source
+https://www.pexels.com/sv-se/foto/landskap-natur-solnedgang-moln-1131407/
