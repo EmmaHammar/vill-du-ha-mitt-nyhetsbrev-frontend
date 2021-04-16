@@ -1,5 +1,7 @@
 # Start project
-XXX??
+nodemon start i terminalen för vill-du-ha-mitt-nyhetsbrev-backend
+
+ELLER SKA DET GÅ ATT SE ÄNDÅ?
 
 
 # Inlämningsuppgift: Vill du ha mitt nyhetsbrev?

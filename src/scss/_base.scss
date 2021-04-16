@@ -1,6 +1,6 @@
 $padding: 2.5rem;
 $margin-0: 0;
-$background-color: linen; 
+$color-linen: linen; 
 
 
 body {
@@ -42,7 +42,7 @@ button {
     min-width: 9vw;
     border-radius: 1rem;
     margin-top: 1rem;
-    background-color: $background-color;
+    background-color: $color-linen;
     font-size: 0.8rem;
 }
 
@@ -71,13 +71,15 @@ main {
 }
 
 footer {
-    // background-color: $background-color;
     position: absolute;
     bottom: 0;
     width: 100%;
     padding-left: $padding;
+    text-align: center;
+    
 
     h4 {
         margin-bottom: 1.2rem;
+        color: $color-linen;
     }
 }
