@@ -1,11 +1,10 @@
 # Start project
-nodemon start i terminalen för vill-du-ha-mitt-nyhetsbrev-backend
+git clone: https://github.com/EmmaHammar/vill-du-ha-mitt-nyhetsbrev-backend.git and follow the instructions in that repo's README.md
 
-ELLER SKA DET GÅ ATT SE ÄNDÅ?
-
+# img-source
+https://www.pexels.com/sv-se/foto/landskap-natur-solnedgang-moln-1131407/
 
 # Inlämningsuppgift: Vill du ha mitt nyhetsbrev?
-
 Uppgiften går ut på att utveckla ett användargränssnitt där besökare på din webbsida kan regsitrera ett nytt konto och då välja att prenumenera eller inte på ett nyhetsbrev. 
 Sedan skall användaren kunna logga in på sitt skapade konto och ändra sin prenumerationsstatus.
 
@@ -38,6 +37,3 @@ Frontend applikationen är deployad på Github pages
 Backend servern är deployad på Heroku
 Databasen är lagrad på MongoDB Atlas
 För att få VG på uppgiften så skall även en skriven reflektion som når upp till kravet av nivå 2 (reflekterande text) lämnas in tillsammans med länkar till repos och projektet/sidan i produktion (live länk).
-
-# img-source
-https://www.pexels.com/sv-se/foto/landskap-natur-solnedgang-moln-1131407/

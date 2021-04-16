@@ -1,42 +1,39 @@
-// const header = document.getElementById("header");
 const sectionContainer = document.getElementById("sectionContainer");
 const articleContainer = document.getElementById("articleContainer");
 
-let loginSectionTemplate = `   
-    <section id="loginSection">
+let loginSectionTemplate =    
+    `<section id="loginSection">
         <h2>Logga in</h2> 
         <input id="loginUserName" type="text" placeholder="Användarnamn"><br> 
         <input id="loginPassword" type="text" placeholder="Lösenord"><br> 
-        <button id="loginBtn">Logga in</button>
+        <button id="loginBtn" class="btn-red-nofill">Logga in</button>
         <div id="loginMsgContainer"></div>
-    </section>
-`;
+    </section>`;
 
-let registerSectionTemplate = `
-    <section id="registerSection">
+let registerSectionTemplate = 
+    `<section id="registerSection">
         <h2>Registrera dig</h2> 
         <input id="registerUserName" type="text" placeholder="Användarnamn"><br> 
         <input id="registerPassword" type="text" placeholder="Lösenord"><br> 
-        <button id="registerBtn">Registrera dig</button>
+        <button id="registerBtn" class="btn-red-fill">Registrera dig</button>
         <div id="registerMsgContainer"></div>
-    </section>
-`;
+    </section>`;
 
-let startPageTemplate = `
-    <article>
-        <h2>Välkommen till Kundklubben!</h2>
+let startPageTemplate = 
+    `<article>
+        <h3 class="logo-font">Välkommen!</h3>
         <p>Här kan du logga in för att ändra din prenumerationsstatus.</p>
+        <p>Är det första gången du besöker oss? Registrera ett gratiskonto.</p>
     </article>
 
     <article>
-        <h3>Om oss</h3>
+        <h4>Om oss</h4>
         <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates aspernatur voluptate, tenetur eveniet earum necessitatibus ipsum possimus. Autem aut error illum assumenda quod molestias, nisi aperiam nemo. Itaque, labore sint.
+            Vi är Kundklubben som gillar kunder.
         </p>
-    </article>
-`;
+    </article>`;
 
-const logOutBtnTemplate = `<button id="logOutBtn">Logga ut</button>`;
+const logOutBtnTemplate = `<button id="logOutBtn" class="btn-red-nofill">Logga ut</button>`;
 
 //Om localStorage är tomt visas StartPage. Om den inte är tom visas UserPage.
 if (localStorage.getItem("id") === null) {
@@ -51,7 +48,6 @@ if (localStorage.getItem("id") === null) {
 function printStartPage() {
     sectionContainer.innerHTML = loginSectionTemplate + registerSectionTemplate;
     articleContainer.innerHTML = startPageTemplate;
-
     let loginUserName = document.getElementById("loginUserName");
     let loginPassword = document.getElementById("loginPassword");
     let loginBtn = document.getElementById("loginBtn");
@@ -65,7 +61,6 @@ function printStartPage() {
     registerBtn.addEventListener("click", function() {
         // console.log("registerUserName.value", registerUserName.value);
         // console.log("registerPassword.value", registerPassword.value);
-
         loginMsgContainer.innerHTML = ""; 
 
         let newUser = {userName: registerUserName.value, password: registerPassword.value, subscription: false};
@@ -95,7 +90,6 @@ function printStartPage() {
             console.log("visa error");
             printErrorMsg(registerMsgContainer);
         }
-        
     });
 
     loginBtn.addEventListener("click", function() {
@@ -103,10 +97,10 @@ function printStartPage() {
         registerMsgContainer.innerHTML = ""; 
         console.log("klick loginBtn");
 
-        //borde detta vara samma som newUser i registerBtn-listener?
+        //FRÅGA: borde detta vara samma som newUser i registerBtn-listener?
         //köra crypto
         let user = {userName: loginUserName.value, password: loginPassword.value};
-        console.log(user);
+        // console.log(user);
 
         if ( (loginUserName.value !== "") && (loginPassword.value !== "") ) {
             console.log("fetcha");
@@ -121,56 +115,38 @@ function printStartPage() {
             })
             .then(res => res.json())
             .then(function(res) {
-                console.log("res", res);
-                console.log("res.id", res.id);
-                // console.log("res.subscription", res.subscription);
+                // console.log("res.id", res.id);
 
                 if (res.id !== undefined) {
-
                     console.log("Login sucess - save id to lS");
                     localStorage.setItem("id", res.id);
-                    
                     printUserPage();
-
                 } else {
-                    
                     console.log("Login fail - show error");
                     printErrorMsg(loginMsgContainer)
                 }
-
             }); 
 
         } else {
             console.log("visa error");
             printErrorMsg(loginMsgContainer);
         }
-
     });
-
 };
 
 function printErrorMsg(msgContainer) {
-
-    let errorMsg = `<p>Error, du måste fylla i användarnamn och lösenord.</p>`;
+    let errorMsg = `<p class="error">Error, du måste fylla i användarnamn och lösenord.</p>`;
     msgContainer.innerHTML = errorMsg;
 };
 
 function printRegisterSuccess() {
-
-    let registerSuccess = `
-        <p>Tack för din registrering. Du kan du logga in med dina nya användaruppgifter.</p>
-    `;
+    let registerSuccess = `<p>Tack för din registrering. Du kan du logga in med dina nya användaruppgifter.</p>`;
     registerMsgContainer.innerHTML = registerSuccess;
-
 };
 
 function printRegisterFail() {
-    
-    let registerFail = `
-        <p>Användarnamnet finns redan, pröva med ett annat.</p>
-    `;
+    let registerFail = `<p>Användarnamnet finns redan, pröva med ett annat.</p>`;
     registerMsgContainer.innerHTML = registerFail;
-
 };
 
 function printUserPage(getSubscriptionStatus) {
@@ -183,11 +159,10 @@ function printUserPage(getSubscriptionStatus) {
     .then(function(data) {
         console.log(data);
 
-        let userPageTemplate = `
-        <h5>Du är inloggad på Kundklubben!</h5> 
-        <div id="subscribeStatusContainer"></div>
-        <button id="subscriptionBtn">Ändra prenumerationsstatus</button>
-        `;
+        let userPageTemplate = 
+            `<h5>Nu är du inloggad!</h5> 
+            <div id="subscribeStatusContainer"></div>
+            <button id="subscriptionBtn" class="btn-red-fill">Ändra prenumerationsstatus</button>`;
 
         articleContainer.innerHTML = userPageTemplate;
         sectionContainer.innerHTML = logOutBtnTemplate;
@@ -199,22 +174,16 @@ function printUserPage(getSubscriptionStatus) {
         switch (data) {
             case true: 
                 subscriptionStatus = "Du prenumererar";
-                console.log("subscriptionStatus from case true", subscriptionStatus);
+                // console.log("subscriptionStatus from case true", subscriptionStatus);
                 subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
                 subscribeStatusContainer.innerHTML = subscribeTemplate;
-                console.log("subscribeStatusContainer", subscribeStatusContainer);
-
-                // localStorage.setItem("subscription");
-
+                // console.log("subscribeStatusContainer", subscribeStatusContainer);
                 break;
             case false: 
                 subscriptionStatus = "Du prenumererar inte";
-                console.log("subscriptionStatus from case false", subscriptionStatus);
+                // console.log("subscriptionStatus from case false", subscriptionStatus);
                 subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
                 subscribeStatusContainer.innerHTML = subscribeTemplate;
-
-                // localStorage.setItem("subscription");
-
                 break;
         };
 
@@ -226,43 +195,32 @@ function printUserPage(getSubscriptionStatus) {
             
             // fetch(`http://localhost:3000/users/subscribe/${getId}`)
             fetch('http://localhost:3000/users/subscribe/' + getId )
+            .then(data => data.json())
+            .then(function(data) {
+                console.log("subscriptionStatus True or False", data);
 
-                .then(data => data.json())
-                .then(function(data) {
-                    console.log("subscriptionStatus True or False", data);
-
-                    let subscribeTemplate;
-                    switch (data) {
-                        case true: 
-                            subscriptionStatus = "Du prenumererar";
-                            console.log("subscriptionStatus from case true", subscriptionStatus);
-                            subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
-                            subscribeStatusContainer.innerHTML = subscribeTemplate;
-
-                            // localStorage.setItem("subscription");
-
-                            break;
-                        case false: 
-                            subscriptionStatus = "Du prenumererar inte";
-                            console.log("subscriptionStatus from case false", subscriptionStatus);
-                            subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
-                            subscribeStatusContainer.innerHTML = subscribeTemplate;
-
-                            // localStorage.setItem("subscription");
-
-                            break;
-                    };
-                });
-
+                let subscribeTemplate;
+                switch (data) {
+                    case true: 
+                        subscriptionStatus = "Du prenumererar";
+                        console.log("subscriptionStatus from case true", subscriptionStatus);
+                        subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+                        subscribeStatusContainer.innerHTML = subscribeTemplate;
+                        break;
+                    case false: 
+                        subscriptionStatus = "Du prenumererar inte";
+                        console.log("subscriptionStatus from case false", subscriptionStatus);
+                        subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+                        subscribeStatusContainer.innerHTML = subscribeTemplate;
+                        break;
+                };
+            });
         })
 
         logOutBtn.addEventListener("click", function() {
             console.log("klick logout");
             localStorage.removeItem("id"); 
-            // localStorage.removeItem("subscription"); 
             printStartPage();
         })
-
     });
-
 };
