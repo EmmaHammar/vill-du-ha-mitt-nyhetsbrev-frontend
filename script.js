@@ -50,7 +50,7 @@ if (localStorage.getItem("id") === null) {
 
 function printStartPage() {
     sectionContainer.innerHTML = loginSectionTemplate + registerSectionTemplate;
-    articleContainer.insertAdjacentHTML("afterbegin", startPageTemplate);
+    articleContainer.innerHTML = startPageTemplate;
 
     let loginUserName = document.getElementById("loginUserName");
     let loginPassword = document.getElementById("loginPassword");
@@ -130,23 +130,7 @@ function printStartPage() {
                     console.log("Login sucess - save id to lS");
                     localStorage.setItem("id", res.id);
                     
-                    // let subscriptionStatus;
-
-                    // if (res.subscription === true) {
-                    //     subscriptionStatus = "Du prenumererar";
-                    //     localStorage.setItem("subscription", subscriptionStatus);
-                    //     console.log(subscriptionStatus);
-                        
-                    // } else {
-                    //     subscriptionStatus = "Du prenumererar inte";
-                    //     console.log(subscriptionStatus);
-                    //     localStorage.setItem("subscription", subscriptionStatus);
-
-                    // }
-                    // printUserPage(subscriptionStatus);
                     printUserPage();
-
-                    
 
                 } else {
                     
@@ -234,32 +218,8 @@ function printUserPage(getSubscriptionStatus) {
                 break;
         };
 
-       
-
-   
-        
-        // getSubscriptionStatus = localStorage.getItem("subscription");
-        // console.log(getSubscriptionStatus);
-
-        
-
-        // let userPageTemplate = `
-        //     <h5>Du är inloggad på Kundklubben!</h5> 
-        //     <p>${getSubscriptionStatus} på nyhetsbrevet.</p>
-        //     <div id="subscribeStatusContainer"></div>
-        //     <button id="subscriptionBtn">Ändra prenumerationsstatus</button>
-        // `;
-
-        // subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
-        // subscribeStatusContainer.innerHTML = subscribeTemplate;
-        
-       
-
         let subscriptionBtn = document.getElementById("subscriptionBtn");
         let logOutBtn = document.getElementById("logOutBtn");
-
-        // let getId = localStorage.getItem("id");
-        // console.log("getId", getId);
 
         subscriptionBtn.addEventListener("click", function() {
             console.log("klick subscriptionBtn");

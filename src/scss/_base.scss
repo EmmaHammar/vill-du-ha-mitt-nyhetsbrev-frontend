@@ -43,6 +43,7 @@ button {
     border-radius: 1rem;
     margin-top: 1rem;
     background-color: $background-color;
+    font-size: 0.8rem;
 }
 
 main {
@@ -70,12 +71,12 @@ main {
 }
 
 footer {
-    background-color: $background-color;
+    // background-color: $background-color;
     position: absolute;
     bottom: 0;
     width: 100%;
     padding-left: $padding;
-    
+
     h4 {
         margin-bottom: 1.2rem;
     }
