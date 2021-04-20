@@ -64,10 +64,8 @@ function printStartPage() {
         loginMsgContainer.innerHTML = ""; 
 
         let newUser = {userName: registerUserName.value, password: registerPassword.value, subscription: false};
-        console.log("newUser", newUser);
 
         if ( (registerUserName.value !== "") && (registerPassword.value !== "") ) {
-            console.log("fetcha");
             fetch('http://localhost:3000/users/register', {
 
                 method: 'post',
@@ -78,16 +76,20 @@ function printStartPage() {
             })
             .then(res => res.json())
             .then(function(res) {
-                console.log(res);
-                if (res === "newUser saved") {
+                // console.log("res /register-routern:", res.code); 
+                if (res.code === "newUser saved") {
+                    
+                    console.log(res.id);
+                    // localStorage.setItem("id", res.id);
+                    // printUserPage();
                     printRegisterSuccess();
                 }
-                if (res === "userName already exists") {
+                if (res.code === "userName already exists") {
                     printRegisterFail();
                 }
             });
         } else {
-            console.log("visa error");
+            // console.log("visa error");
             printErrorMsg(registerMsgContainer);
         }
     });
@@ -96,41 +98,62 @@ function printStartPage() {
 
         registerMsgContainer.innerHTML = ""; 
         console.log("klick loginBtn");
-
+        
         //FRÅGA: borde detta vara samma som newUser i registerBtn-listener?
         //köra crypto
         let user = {userName: loginUserName.value, password: loginPassword.value};
         // console.log(user);
 
-        if ( (loginUserName.value !== "") && (loginPassword.value !== "") ) {
-            console.log("fetcha");
+        fetch('http://localhost:3000/users/check', {
 
-            fetch('http://localhost:3000/users/login', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+        .then(res => res.json())
+        .then(function(res) {
 
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(user)
-            })
-            .then(res => res.json())
-            .then(function(res) {
-                // console.log("res.id", res.id);
+            console.log(res);
 
-                if (res.id !== undefined) {
-                    console.log("Login sucess - save id to lS");
-                    localStorage.setItem("id", res.id);
-                    printUserPage();
-                } else {
-                    console.log("Login fail - show error");
-                    printErrorMsg(loginMsgContainer)
-                }
-            }); 
+            if(res.code == "ok") {
+                console.log("user inloggad");
+                //spara data + id
+            } else {
+                console.log("error");
+            }
+        });
 
-        } else {
-            console.log("visa error");
-            printErrorMsg(loginMsgContainer);
-        }
+        // if ( (loginUserName.value !== "") && (loginPassword.value !== "") ) {
+        //     console.log("fetcha");
+
+        //     fetch('http://localhost:3000/users/login', {
+
+        //         method: 'post',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify(user)
+        //     })
+        //     .then(res => res.json())
+        //     .then(function(res) {
+        //         // console.log("res.id", res.id);
+
+        //         if (res.id !== undefined) {
+        //             console.log("Login sucess - save id to lS");
+        //             localStorage.setItem("id", res.id);
+        //             printUserPage();
+        //         } else {
+        //             console.log("Login fail - show error");
+        //             printErrorMsg(loginMsgContainer)
+        //         }
+        //     }); 
+
+        // } else {
+        //     console.log("visa error");
+        //     printErrorMsg(loginMsgContainer);
+        // }
     });
 };
 
@@ -149,78 +172,84 @@ function printRegisterFail() {
     registerMsgContainer.innerHTML = registerFail;
 };
 
-function printUserPage(getSubscriptionStatus) {
+function printUserPage(id) {
     let getId = localStorage.getItem("id");
     console.log("getId", getId);
+
+}
+
+// function printUserPage(getSubscriptionStatus) {
+//     let getId = localStorage.getItem("id");
+//     console.log("getId", getId);
     
-    fetch('http://localhost:3000/users/userpage/' + getId )
+//     fetch('http://localhost:3000/users/userpage/' + getId )
 
-    .then(data => data.json())
-    .then(function(data) {
-        console.log(data);
+//     .then(data => data.json())
+//     .then(function(data) {
+//         console.log(data);
 
-        let userPageTemplate = 
-            `<h5>Nu är du inloggad!</h5> 
-            <div id="subscribeStatusContainer"></div>
-            <button id="subscriptionBtn" class="btn-red-fill">Ändra prenumerationsstatus</button>`;
+//         let userPageTemplate = 
+//             `<h5>Nu är du inloggad!</h5> 
+//             <div id="subscribeStatusContainer"></div>
+//             <button id="subscriptionBtn" class="btn-red-fill">Ändra prenumerationsstatus</button>`;
 
-        articleContainer.innerHTML = userPageTemplate;
-        sectionContainer.innerHTML = logOutBtnTemplate;
+//         articleContainer.innerHTML = userPageTemplate;
+//         sectionContainer.innerHTML = logOutBtnTemplate;
 
-        let subscriptionStatus;
-        let subscribeTemplate;
-        let subscribeStatusContainer = document.getElementById("subscribeStatusContainer");
+//         let subscriptionStatus;
+//         let subscribeTemplate;
+//         let subscribeStatusContainer = document.getElementById("subscribeStatusContainer");
 
-        switch (data) {
-            case true: 
-                subscriptionStatus = "Du prenumererar";
-                // console.log("subscriptionStatus from case true", subscriptionStatus);
-                subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
-                subscribeStatusContainer.innerHTML = subscribeTemplate;
-                // console.log("subscribeStatusContainer", subscribeStatusContainer);
-                break;
-            case false: 
-                subscriptionStatus = "Du prenumererar inte";
-                // console.log("subscriptionStatus from case false", subscriptionStatus);
-                subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
-                subscribeStatusContainer.innerHTML = subscribeTemplate;
-                break;
-        };
+//         switch (data) {
+//             case true: 
+//                 subscriptionStatus = "Du prenumererar";
+//                 // console.log("subscriptionStatus from case true", subscriptionStatus);
+//                 subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+//                 subscribeStatusContainer.innerHTML = subscribeTemplate;
+//                 // console.log("subscribeStatusContainer", subscribeStatusContainer);
+//                 break;
+//             case false: 
+//                 subscriptionStatus = "Du prenumererar inte";
+//                 // console.log("subscriptionStatus from case false", subscriptionStatus);
+//                 subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+//                 subscribeStatusContainer.innerHTML = subscribeTemplate;
+//                 break;
+//         };
 
-        let subscriptionBtn = document.getElementById("subscriptionBtn");
-        let logOutBtn = document.getElementById("logOutBtn");
+//         let subscriptionBtn = document.getElementById("subscriptionBtn");
+//         let logOutBtn = document.getElementById("logOutBtn");
 
-        subscriptionBtn.addEventListener("click", function() {
-            console.log("klick subscriptionBtn");
+//         subscriptionBtn.addEventListener("click", function() {
+//             console.log("klick subscriptionBtn");
             
-            // fetch(`http://localhost:3000/users/subscribe/${getId}`)
-            fetch('http://localhost:3000/users/subscribe/' + getId )
-            .then(data => data.json())
-            .then(function(data) {
-                console.log("subscriptionStatus True or False", data);
+//             // fetch(`http://localhost:3000/users/subscribe/${getId}`)
+//             fetch('http://localhost:3000/users/subscribe/' + getId )
+//             .then(data => data.json())
+//             .then(function(data) {
+//                 console.log("subscriptionStatus True or False", data);
 
-                let subscribeTemplate;
-                switch (data) {
-                    case true: 
-                        subscriptionStatus = "Du prenumererar";
-                        console.log("subscriptionStatus from case true", subscriptionStatus);
-                        subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
-                        subscribeStatusContainer.innerHTML = subscribeTemplate;
-                        break;
-                    case false: 
-                        subscriptionStatus = "Du prenumererar inte";
-                        console.log("subscriptionStatus from case false", subscriptionStatus);
-                        subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
-                        subscribeStatusContainer.innerHTML = subscribeTemplate;
-                        break;
-                };
-            });
-        })
+//                 let subscribeTemplate;
+//                 switch (data) {
+//                     case true: 
+//                         subscriptionStatus = "Du prenumererar";
+//                         console.log("subscriptionStatus from case true", subscriptionStatus);
+//                         subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+//                         subscribeStatusContainer.innerHTML = subscribeTemplate;
+//                         break;
+//                     case false: 
+//                         subscriptionStatus = "Du prenumererar inte";
+//                         console.log("subscriptionStatus from case false", subscriptionStatus);
+//                         subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+//                         subscribeStatusContainer.innerHTML = subscribeTemplate;
+//                         break;
+//                 };
+//             });
+//         })
 
-        logOutBtn.addEventListener("click", function() {
-            console.log("klick logout");
-            localStorage.removeItem("id"); 
-            printStartPage();
-        })
-    });
-};
+//         logOutBtn.addEventListener("click", function() {
+//             console.log("klick logout");
+//             localStorage.removeItem("id"); 
+//             printStartPage();
+//         })
+//     });
+// };
