@@ -207,7 +207,6 @@ function printRegisterFail() {
 };
 
 
-
 function printUserPage(id) {
 
     fetch('http://localhost:3000/users/userpage/' + id )
