@@ -134,7 +134,11 @@ function printStartPage() {
         //     }
         // });
 
-        if ( (loginUserName.value !== "") && (loginPassword.value !== "") ) {
+        console.log("loginUserName.value ", loginUserName.value);
+        console.log("loginPassword.value ", loginPassword.value);
+
+        
+        if ( (loginUserName.value !== "") && (loginPassword.value !== "" ) ) {
             console.log("fetcha");
 
             fetch('http://localhost:3000/users/userpage', {
@@ -181,9 +185,9 @@ function printStartPage() {
             //         }
             // }); 
 
-        // } else {
-        //     console.log("visa error");
-        //     printErrorMsg(loginMsgContainer);
+        } else {
+            console.log("visa error");
+            printErrorMsg(loginMsgContainer);
         }
     });
 };
