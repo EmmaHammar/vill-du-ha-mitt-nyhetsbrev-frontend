@@ -33,6 +33,8 @@ let startPageTemplate =
         </p>
     </article>`;
 
+    
+
 const logOutBtnTemplate = `<button id="logOutBtn" class="btn-red-nofill">Logga ut</button>`;
 
 //Om localStorage är tomt visas StartPage. Om den inte är tom visas UserPage.
@@ -53,6 +55,7 @@ function saveToLS(key, value) {
 function printStartPage() {
     sectionContainer.innerHTML = loginSectionTemplate + registerSectionTemplate;
     articleContainer.innerHTML = startPageTemplate;
+
     let loginUserName = document.getElementById("loginUserName");
     let loginPassword = document.getElementById("loginPassword");
     let loginBtn = document.getElementById("loginBtn");
@@ -274,9 +277,10 @@ function printUserPage(id) {
 
             printSubscriptionStatus(data, userPageTemplate);
             printUserPage(id); // här går det att trycka på subscribeBtn 
+
         });
 
-        // changeSubscriptionStatus(data.subscription, id, data);
+        changeSubscriptionStatus(data.subscription, id, data);
         logOut();
 
     });
@@ -309,56 +313,58 @@ function logOut() {
 
 
 
-// function changeSubscriptionStatus(status, id, data) {
-//     const subscriptionBtn = document.getElementById("subscriptionBtn");
-//     let newStatus; 
+function changeSubscriptionStatus(status, id, data) {
+    const subscriptionBtn = document.getElementById("subscriptionBtn");
+    let newStatus; 
     
-//     subscriptionBtn.addEventListener("click", function() {
-//         console.log("klick changeSubscriptionStatus");
-//         if (status === false) {
-//             console.log("Grattis, du prenumererar!");
-//             newStatus = true;
-//         } else {
-//             console.log("Oh no, du prenumererar inte!");
-//             newStatus = false;
-//         }
-//         // console.log("spara newStatus till mongoDB", newStatus);
-//         // console.log("id söka efter", id);
+    subscriptionBtn.addEventListener("click", function() {
+        console.log("klick changeSubscriptionStatus");
+        if (status === false) {
+            console.log("Grattis, du prenumererar!");
+            newStatus = true;
+        } else {
+            console.log("Oh no, du prenumererar inte!");
+            newStatus = false;
+        }
+        console.log("spara newStatus till mongoDB", newStatus);
+        // console.log("id söka efter", id);
         
-//         let user = data;
-//         console.log("user", user);
+        let user = data;
+        console.log("notUpdatedUser", user);
 
-//             fetch('http://localhost:3000/users/subscribe/' + id, {
+            fetch('http://localhost:3000/users/subscribe/' + id, {
 
-//                 method: 'post',
-//                 headers: {
-//                     'Content-Type': 'application/json'
-//                 },
-//                 body: JSON.stringify(user)
-//             })
-//             .then(res => res.json())
-//             .then(function(res) {
-//                 console.log("res.subscription", res.subscription);
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+            .then(res => res.json())
+            .then(function(res) {
+                console.log("res.subscription", res.subscription);
 
-//                 let subscribeTemplate;
-//                 let subscribeStatusContainer = document.getElementById("subscribeStatusContainer");
-//                 switch (res.subscription) {
-//                     case true: 
-//                         subscriptionStatus = "Du prenumererar";
-//                         // console.log("subscriptionStatus from case true", subscriptionStatus);
-//                         subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
-//                         subscribeStatusContainer.innerHTML = subscribeTemplate;
-//                         break;
-//                     case false: 
-//                         subscriptionStatus = "Du prenumererar inte";
-//                         // console.log("subscriptionStatus from case false", subscriptionStatus);
-//                         subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
-//                         subscribeStatusContainer.innerHTML = subscribeTemplate;
+                let subscribeTemplate;
+                let subscribeStatusContainer = document.getElementById("subscribeStatusContainer");
+                switch (res.subscription) {
+                    case true: 
+                        subscriptionStatus = "Du prenumererar";
+                        // console.log("subscriptionStatus from case true", subscriptionStatus);
+                        subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+                        subscribeStatusContainer.innerHTML = subscribeTemplate;
+                        break;
+                    case false: 
+                        subscriptionStatus = "Du prenumererar inte";
+                        // console.log("subscriptionStatus from case false", subscriptionStatus);
+                        subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+                        subscribeStatusContainer.innerHTML = subscribeTemplate;
                         
-//                         break;
-//                 };
+                        break;
+                };
 
-//             });
+            });
+    });
+};
 
 
             // fetch('http://localhost:3000/users/subscribe/' + id )
