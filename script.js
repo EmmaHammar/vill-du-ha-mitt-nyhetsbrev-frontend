@@ -66,8 +66,7 @@ function printStartPage() {
 
     //registrera ny användare (identifieras genom randomiserad nyckel)
     registerBtn.addEventListener("click", function() {
-        // console.log("registerUserName.value", registerUserName.value);
-        // console.log("registerPassword.value", registerPassword.value);
+
         loginMsgContainer.innerHTML = ""; 
 
         let newUser = {userName: registerUserName.value, password: registerPassword.value, subscription: false};
@@ -220,9 +219,9 @@ function printUserPage(id) {
         //visa prenumerationsstatus
         let subStatus = ""; 
         if (data.subscription === true) {
-            subStatus = "<p>Jippie, jag prenumererar!"
+            subStatus = "<p>Wee, nu prenumererar du!"
         } else {
-            subStatus = "<p>Oh no, jag prenumererar inte!</p>"
+            subStatus = "<p>Oj oj, nu prenumererar du inte!</p>"
         }
 
         let userPageTemplate = 
@@ -239,6 +238,7 @@ function printUserPage(id) {
             </div>`;
 
         articleContainer.innerHTML = userPageTemplate;
+        sectionContainer.innerHTML = logOutBtnTemplate;
 
         let userWelcome = document.getElementById("userWelcome");
         let userNameSpan = document.getElementById("userNameSpan");
@@ -288,6 +288,7 @@ function printUserPage(id) {
             });
 
         })
+        logOut();
 
 
            
