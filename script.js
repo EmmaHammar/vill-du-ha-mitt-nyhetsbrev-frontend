@@ -100,8 +100,6 @@ function printStartPage() {
     });
 
 
-
-
     loginBtn.addEventListener("click", function() {
 
         registerMsgContainer.innerHTML = ""; 
@@ -203,12 +201,13 @@ function printRegisterFail() {
     registerMsgContainer.innerHTML = registerFail;
 };
 
-
-
-
 function printUserPage(id) {
     // let userPageTemplate = `<div></div>`;
-    userPageTemplate = document.getElementById("userPageTemplate");
+    // articleContainer.innerHTML
+    // let userPageTemplate = document.createElement("div");
+    // userPageTemplate.id = "userPageTemplate";
+    // userPageTemplate = document.getElementById("userPageTemplate");
+    // console.log("userPageTemplate", userPageTemplate);
 
     fetch('http://localhost:3000/users/userpage/' + id )
 
@@ -216,13 +215,21 @@ function printUserPage(id) {
     .then(function(data) {
         console.log("userName + subscription", data);
 
+        // console.log("userPageTemplate", userPageTemplate); // här är den null
         
-        userPageInfo = 
+        let userPageTemplate = document.createElement("div");
+        userPageTemplate.id = "userPageTemplate";
+        // console.log("userPageTemplate", userPageTemplate); // här är den en div
+       
+        let userPageInfo = 
             `<h5>Nu är du inloggad, ${data.userName}!</h5>
             <button id="subscriptionBtn" class="btn-red-fill">Ändra prenumerationsstatus</button>
             `;
 
+        // console.log("userPageInfo", userPageInfo); //den är som ovan
         userPageTemplate += userPageInfo;
+
+        // console.log("userPageTemplate med userPageInfo", userPageTemplate); // här har object lagts till.. VARFÖR?
 
         printSubscriptionStatus(data, userPageTemplate);
         sectionContainer.innerHTML = logOutBtnTemplate;
@@ -244,20 +251,20 @@ function printUserPage(id) {
             })
             .then(res => res.json())
             .then(function(res) {
-                console.log("res.subscription", res.subscription);
+                console.log("res.subscription in", res.subscription);
 
                 let subscribeTemplate;
                 let subscribeStatusContainer = document.getElementById("subscribeStatusContainer");
                 switch (res.subscription) {
                     case true: 
                         subscriptionStatus = "Du prenumererar";
-                        // console.log("subscriptionStatus from case true", subscriptionStatus);
+                        console.log("subscriptionStatus from case true", subscriptionStatus);
                         subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
                         subscribeStatusContainer.innerHTML = subscribeTemplate;
                         break;
                     case false: 
                         subscriptionStatus = "Du prenumererar inte";
-                        // console.log("subscriptionStatus from case false", subscriptionStatus);
+                        console.log("subscriptionStatus from case false", subscriptionStatus);
                         subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
                         subscribeStatusContainer.innerHTML = subscribeTemplate;
                         break;
@@ -266,6 +273,7 @@ function printUserPage(id) {
             });
 
             printSubscriptionStatus(data, userPageTemplate);
+            printUserPage(id); // här går det att trycka på subscribeBtn 
         });
 
         // changeSubscriptionStatus(data.subscription, id, data);
