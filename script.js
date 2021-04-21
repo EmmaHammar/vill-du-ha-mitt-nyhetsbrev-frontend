@@ -69,7 +69,9 @@ function printStartPage() {
 
         loginMsgContainer.innerHTML = ""; 
 
-        let newUser = {userName: registerUserName.value, password: registerPassword.value, subscription: false};
+        // let newUser = {userName: registerUserName.value, password: registerPassword.value, subscription: false};
+        let newUser = {userName: registerUserName.value, password: registerPassword.value};
+
 
         if ( (registerUserName.value !== "") && (registerPassword.value !== "") ) {
             fetch('http://localhost:3000/users/register', {
