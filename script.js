@@ -243,9 +243,10 @@ function printUserPage(id) {
         let userWelcome = document.getElementById("userWelcome");
         let userNameSpan = document.getElementById("userNameSpan");
         let subWrapper = document.getElementById("subWrapper");
-        let subStatusWrapper = document.getElementById("subStatus");
+        let subStatusWrapper = document.getElementById("subStatusWrapper");
         let btnWrapper = document.getElementById("btnWrapper");
         let subBtn = document.getElementById("subBtn");
+        
 
         subBtn.addEventListener("click", function() {
             console.log("klick subBtn");
@@ -266,13 +267,30 @@ function printUserPage(id) {
 
                 console.log("res from MongoDB", res);
 
+                subStatus = res.subscription;
+
+                let newSubStatus; 
+
+                switch (subStatus) {
+                    case true: 
+                        newSubStatus = "Wee, nu prenumererar du!"
+                        break; 
+                    case false: 
+                        newSubStatus = "Oj oj, nu prenumererar du inte!"
+                        break;
+
+                };
+
+                subStatusWrapper.innerHTML = newSubStatus;
+
+
                 
             });
 
         })
 
 
-        
+           
         
         // userNameSpan.innerHTML = data.userName;
        
