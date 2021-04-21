@@ -11,6 +11,7 @@ $margin-bottom-heading: 0.6rem;
     border: 2px solid $color-red;
     background: none;
     color: $color-red;
+    font-weight: bold;
 }
 
 @mixin btn-red-fill {
@@ -20,12 +21,8 @@ $margin-bottom-heading: 0.6rem;
 }
 
 body {
-    background-image: url("/dist/img/flowers-in-sunset-pexels-david-bartus.jpg");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
+    background-color: thistle;
     font-family: 'Titillium Web', sans-serif;
-    position: relative;
     min-height: 100vh;
 }
 
@@ -90,13 +87,25 @@ main {
     h3, h4 {
         margin-bottom: $margin-bottom-heading;
     }
-    h5 {
-        font-size: 1.5rem;
-        margin-bottom: $margin-bottom-heading;
-    }
     p {
         margin-top: 2px;
         margin-bottom: 10px;
+    }
+    #userWelcome {
+        display: flex;
+        align-items: baseline;
+    }
+    #userNameSpan {
+        margin-left: 2px;
+        font-weight: bold;
+    }
+    #subHeading {
+        padding-top: 10px;
+        text-decoration: underline;
+        
+    }
+    #subStatusWrapper p {
+       margin-bottom: 0;
     }
 }
 
@@ -116,6 +125,7 @@ footer {
     text-align: center;
     h5 {
         margin-bottom: 1.2rem;
-        color: $color-linen-transp;
+        color: $color-linen;
+        font-size: 1.1rem;
     }
 }

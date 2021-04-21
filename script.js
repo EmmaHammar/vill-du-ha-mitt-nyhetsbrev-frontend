@@ -161,16 +161,16 @@ function printUserPage(id) {
         if (data.subscription === true) {
             subStatus = "<p>Wee, nu prenumererar du!"
         } else {
-            subStatus = "<p>Oj oj, nu prenumererar du inte!</p>"
+            subStatus = "<p>Oj oj, du prenumererar inte!</p>"
         }
 
         let userPageTemplate = 
             `<div id="userWelcome"> 
-                <h4>Nu är du inloggad,</h4>
-                <span id="userNameSpan">${data.userName}</span>
+                <h4>Nu är du inloggad</h4>
+                <span id="userNameSpan">${data.userName}!</span>
             </div>
             <div id="subWrapper">
-                <p>Ditt prenumerationsstatus:</p>
+                <p id="subHeading">Ditt prenumerationsstatus:</p>
                 <div id="subStatusWrapper">${subStatus}</div>
                 <div id="btnWrapper">
                     <button id="subBtn" class="btn-red-fill">Ändra status</button>
@@ -211,7 +211,7 @@ function printUserPage(id) {
                         newSubStatus = "Wee, nu prenumererar du!"
                         break; 
                     case false: 
-                        newSubStatus = "Oj oj, nu prenumererar du inte!"
+                        newSubStatus = "Oj oj, du prenumererar inte!"
                         break;
                 };
                 subStatusWrapper.innerHTML = newSubStatus;

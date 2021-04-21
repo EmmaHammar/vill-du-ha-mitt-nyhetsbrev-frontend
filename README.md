@@ -1,9 +1,6 @@
 # Start project
 git clone: https://github.com/EmmaHammar/vill-du-ha-mitt-nyhetsbrev-backend.git and follow the instructions in that repo's README.md
 
-# img-source
-https://www.pexels.com/sv-se/foto/landskap-natur-solnedgang-moln-1131407/
-
 # Inlämningsuppgift: Vill du ha mitt nyhetsbrev?
 Uppgiften går ut på att utveckla ett användargränssnitt där besökare på din webbsida kan regsitrera ett nytt konto och då välja att prenumenera eller inte på ett nyhetsbrev. 
 Sedan skall användaren kunna logga in på sitt skapade konto och ändra sin prenumerationsstatus.
@@ -20,7 +17,6 @@ Du skall lämna in ett dokument med länk till två repon ett för frontend och 
 
 Siktar du på VG så lämna även in en länk till applikationen i produktion (dvs live).
 
- 
 Kravlista:
 
 G Krav
