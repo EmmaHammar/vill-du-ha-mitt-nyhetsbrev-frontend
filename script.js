@@ -217,6 +217,7 @@ function printUserPage(id) {
     .then(function(data) {
         console.log("userName + subscription", data);
 
+        //visa prenumerationsstatus
         let subStatus = ""; 
         if (data.subscription === true) {
             subStatus = "<p>Jippie, jag prenumererar!"
@@ -249,7 +250,7 @@ function printUserPage(id) {
         subBtn.addEventListener("click", function() {
             console.log("klick subBtn");
 
-            //visa prenumerationsstatus
+            
             let user = data;
             
             fetch('http://localhost:3000/users/subscribe/' + id, {
