@@ -217,14 +217,21 @@ function printUserPage(id) {
     .then(function(data) {
         console.log("userName + subscription", data);
 
+        let subStatus = ""; 
+        if (data.subscription === true) {
+            subStatus = "<p>Jippie, jag prenumererar!"
+        } else {
+            subStatus = "<p>Oh no, jag prenumererar inte!</p>"
+        }
+
         let userPageTemplate = 
             `<div id="userWelcome"> 
                 <h4>Nu är du inloggad,</h4>
-                <span id="userNameSpan"></span>
+                <span id="userNameSpan">${data.userName}</span>
             </div>
             <div id="subWrapper">
                 <p>Ditt prenumerationsstatus:</p>
-                <div id="subStatus"></div>
+                <div id="subStatusWrapper">${subStatus}</div>
                 <div id="btnWrapper">
                     <button id="subBtn" class="btn-red-fill">Ändra status</button>
                 </div>
@@ -235,12 +242,32 @@ function printUserPage(id) {
         let userWelcome = document.getElementById("userWelcome");
         let userNameSpan = document.getElementById("userNameSpan");
         let subWrapper = document.getElementById("subWrapper");
-        let subStatus = document.getElementById("subStatus");
+        let subStatusWrapper = document.getElementById("subStatus");
         let btnWrapper = document.getElementById("btnWrapper");
         let subBtn = document.getElementById("subBtn");
 
         subBtn.addEventListener("click", function() {
             console.log("klick subBtn");
+
+            //visa prenumerationsstatus
+            let user = data;
+            
+            fetch('http://localhost:3000/users/subscribe/' + id, {
+
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+            .then(res => res.json())
+            .then(function(res) {
+
+                console.log("res from MongoDB", res);
+
+                
+            });
+
         })
 
 
