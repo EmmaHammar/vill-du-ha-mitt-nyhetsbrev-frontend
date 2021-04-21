@@ -20,7 +20,7 @@ let registerSectionTemplate =
     </section>`;
 
 let startPageTemplate = 
-    `<article>
+    `<article id="startWelcome">
         <h3 class="logo-font">Välkommen!</h3>
         <p>Här kan du logga in för att ändra din prenumerationsstatus.</p>
         <p>Är det första gången du besöker oss? Registrera ett gratiskonto.</p>
@@ -33,7 +33,6 @@ let startPageTemplate =
         </p>
     </article>`;
 
-    
 
 const logOutBtnTemplate = `<button id="logOutBtn" class="btn-red-nofill">Logga ut</button>`;
 
@@ -208,13 +207,9 @@ function printRegisterFail() {
     registerMsgContainer.innerHTML = registerFail;
 };
 
+
+
 function printUserPage(id) {
-    // let userPageTemplate = `<div></div>`;
-    // articleContainer.innerHTML
-    // let userPageTemplate = document.createElement("div");
-    // userPageTemplate.id = "userPageTemplate";
-    // userPageTemplate = document.getElementById("userPageTemplate");
-    // console.log("userPageTemplate", userPageTemplate);
 
     fetch('http://localhost:3000/users/userpage/' + id )
 
@@ -222,70 +217,95 @@ function printUserPage(id) {
     .then(function(data) {
         console.log("userName + subscription", data);
 
-        // console.log("userPageTemplate", userPageTemplate); // här är den null
+        let userPageTemplate = 
+            `<div id="userWelcome"> 
+                <h4>Nu är du inloggad,</h4>
+                <span id="userNameSpan"></span>
+            </div>
+            <div id="subWrapper">
+                <p>Ditt prenumerationsstatus:</p>
+                <div id="subStatus"></div>
+                <div id="btnWrapper">
+                    <button id="subBtn" class="btn-red-fill">Ändra status</button>
+                </div>
+            </div>`;
+
+        articleContainer.innerHTML = userPageTemplate;
+
+        let userWelcome = document.getElementById("userWelcome");
+        let userNameSpan = document.getElementById("userNameSpan");
+        let subWrapper = document.getElementById("subWrapper");
+        let subStatus = document.getElementById("subStatus");
+        let btnWrapper = document.getElementById("btnWrapper");
+        let subBtn = document.getElementById("subBtn");
+
+        subBtn.addEventListener("click", function() {
+            console.log("klick subBtn");
+        })
+
+
         
-        let userPageTemplate = document.createElement("div");
-        userPageTemplate.id = "userPageTemplate";
-        // console.log("userPageTemplate", userPageTemplate); // här är den en div
+        
+        // userNameSpan.innerHTML = data.userName;
        
-        let userPageInfo = 
-            `<h5>Nu är du inloggad, ${data.userName}!</h5>
-            <button id="subscriptionBtn" class="btn-red-fill">Ändra prenumerationsstatus</button>
-            `;
+        // let userPageInfo = 
+        //     `<h5>Nu är du inloggad, ${data.userName}!</h5>
+        //     <button id="subscriptionBtn" class="btn-red-fill">Ändra prenumerationsstatus</button>
+        //     `;
 
         // console.log("userPageInfo", userPageInfo); //den är som ovan
-        userPageTemplate += userPageInfo;
+        // userPageTemplate += userPageInfo;
 
         // console.log("userPageTemplate med userPageInfo", userPageTemplate); // här har object lagts till.. VARFÖR?
+        
+        // printSubscriptionStatus(data, userPageTemplate);
+        // sectionContainer.innerHTML = logOutBtnTemplate;
 
-        printSubscriptionStatus(data, userPageTemplate);
-        sectionContainer.innerHTML = logOutBtnTemplate;
-
-        const subscriptionBtn = document.getElementById("subscriptionBtn");
-        subscriptionBtn.addEventListener("click", function() {
-            console.log("klixk subscriptionBtn");
+        // const subscriptionBtn = document.getElementById("subscriptionBtn");
+        // subscriptionBtn.addEventListener("click", function() {
+        //     console.log("klixk subscriptionBtn");
 
 
-            let user = data;
+        //     let user = data;
             
-            fetch('http://localhost:3000/users/subscribe/' + id, {
+        //     fetch('http://localhost:3000/users/subscribe/' + id, {
 
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(user)
-            })
-            .then(res => res.json())
-            .then(function(res) {
-                console.log("res.subscription in", res.subscription);
+        //         method: 'post',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify(user)
+        //     })
+        //     .then(res => res.json())
+        //     .then(function(res) {
+        //         console.log("res.subscription in", res.subscription);
 
-                let subscribeTemplate;
-                let subscribeStatusContainer = document.getElementById("subscribeStatusContainer");
-                switch (res.subscription) {
-                    case true: 
-                        subscriptionStatus = "Du prenumererar";
-                        console.log("subscriptionStatus from case true", subscriptionStatus);
-                        subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
-                        subscribeStatusContainer.innerHTML = subscribeTemplate;
-                        break;
-                    case false: 
-                        subscriptionStatus = "Du prenumererar inte";
-                        console.log("subscriptionStatus from case false", subscriptionStatus);
-                        subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
-                        subscribeStatusContainer.innerHTML = subscribeTemplate;
-                        break;
-                };
+        //         let subscribeTemplate;
+        //         let subscribeStatusContainer = document.getElementById("subscribeStatusContainer");
+        //         switch (res.subscription) {
+        //             case true: 
+        //                 subscriptionStatus = "Du prenumererar";
+        //                 console.log("subscriptionStatus from case true", subscriptionStatus);
+        //                 subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+        //                 subscribeStatusContainer.innerHTML = subscribeTemplate;
+        //                 break;
+        //             case false: 
+        //                 subscriptionStatus = "Du prenumererar inte";
+        //                 console.log("subscriptionStatus from case false", subscriptionStatus);
+        //                 subscribeTemplate = `<p>${subscriptionStatus} på nyhetsbrevet</p>`;
+        //                 subscribeStatusContainer.innerHTML = subscribeTemplate;
+        //                 break;
+        //         };
 
-            });
+        //     });
 
-            printSubscriptionStatus(data, userPageTemplate);
-            printUserPage(id); // här går det att trycka på subscribeBtn 
+        //     printSubscriptionStatus(data, userPageTemplate);
+        //     printUserPage(id); // här går det att trycka på subscribeBtn 
 
-        });
+        // });
 
-        changeSubscriptionStatus(data.subscription, id, data);
-        logOut();
+        // changeSubscriptionStatus(data.subscription, id, data);
+        // logOut();
 
     });
 };
