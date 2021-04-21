@@ -14,6 +14,7 @@ let registerSectionTemplate =
     `<section id="registerSection">
         <h2>Registrera dig</h2> 
         <input id="registerUserName" type="text" placeholder="Användarnamn"><br> 
+        <input id="registerEmail" type="text" placeholder="Email"><br> 
         <input id="registerPassword" type="text" placeholder="Lösenord"><br> 
         <button id="registerBtn" class="btn-red-fill">Registrera dig</button>
         <div id="registerMsgContainer"></div>
@@ -60,6 +61,7 @@ function printStartPage() {
     let loginBtn = document.getElementById("loginBtn");
     let loginMsgContainer = document.getElementById("loginMsgContainer");
     let registerUserName = document.getElementById("registerUserName");
+    let registerEmail = document.getElementById("registerEmail");
     let registerPassword = document.getElementById("registerPassword");
     let registerBtn = document.getElementById("registerBtn");
     let registerMsgContainer = document.getElementById("registerMsgContainer");
@@ -68,9 +70,9 @@ function printStartPage() {
     registerBtn.addEventListener("click", function() {
 
         loginMsgContainer.innerHTML = ""; 
-        let newUser = {userName: registerUserName.value, password: registerPassword.value};
+        let newUser = {userName: registerUserName.value, password: registerPassword.value, email: registerEmail.value};
 
-        if ( (registerUserName.value !== "") && (registerPassword.value !== "") ) {
+        if ( (registerUserName.value !== "") && (registerPassword.value !== "") && (registerEmail.value !== "")) {
             fetch('http://localhost:3000/users/register', {
 
                 method: 'post',
