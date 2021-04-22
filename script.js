@@ -73,7 +73,7 @@ function printStartPage() {
         let newUser = {userName: registerUserName.value, password: registerPassword.value, email: registerEmail.value};
 
         if ( (registerUserName.value !== "") && (registerPassword.value !== "") && (registerEmail.value !== "")) {
-            fetch('http://localhost:3000/users/register', {
+            fetch('https://vill-du-ha-mitt-nyhetsbrev-be.herokuapp.com/users/register', {
 
                 method: 'post',
                 headers: {
@@ -109,7 +109,7 @@ function printStartPage() {
         if ( (loginUserName.value !== "") && (loginPassword.value !== "" ) ) {
             console.log("fetcha");
 
-            fetch('http://localhost:3000/users/userpage', {
+            fetch('https://vill-du-ha-mitt-nyhetsbrev-be.herokuapp.com/users/userpage', {
 
                 method: 'post',
                 headers: {
@@ -150,7 +150,7 @@ function printRegisterFail() {
 };
 
 function printUserPage(id) {
-    fetch('http://localhost:3000/users/userpage/' + id )
+    fetch('https://vill-du-ha-mitt-nyhetsbrev-be.herokuapp.com/users/userpage/' + id )
 
     .then(data => data.json())
     .then(function(data) {
@@ -191,7 +191,7 @@ function printUserPage(id) {
 
             let user = data;
             
-            fetch('http://localhost:3000/users/subscribe/' + id, {
+            fetch('https://vill-du-ha-mitt-nyhetsbrev-be.herokuapp.com/users/subscribe/' + id, {
 
                 method: 'post',
                 headers: {
