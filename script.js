@@ -125,7 +125,8 @@ function printStartPage() {
                 if(res.code == "ok") {
                     // console.log("user inloggad");
                     saveToLS("id", res.userId);
-                    printUserPage(res.userId);
+                    // printUserPage(res.userId);
+                    printUserPage();
                 } else {
                     console.log("error");
                     printErrorMsg(loginMsgContainer);
@@ -149,9 +150,12 @@ function printRegisterFail() {
     registerMsgContainer.innerHTML = registerFail;
 };
 
-function printUserPage(id) {
-    fetch('https://vill-du-ha-mitt-nyhetsbrev-be.herokuapp.com/users/userpage/' + id )
+// function printUserPage(id) {
+    // fetch('https://vill-du-ha-mitt-nyhetsbrev-be.herokuapp.com/users/userpage/' + id )
 
+function printUserPage() {
+
+    fetch('https://vill-du-ha-mitt-nyhetsbrev-be.herokuapp.com/users/userpage')
     .then(data => data.json())
     .then(function(data) {
         console.log("userName + subscription", data);
@@ -191,7 +195,9 @@ function printUserPage(id) {
 
             let user = data;
             
-            fetch('https://vill-du-ha-mitt-nyhetsbrev-be.herokuapp.com/users/subscribe/' + id, {
+            // fetch('https://vill-du-ha-mitt-nyhetsbrev-be.herokuapp.com/users/subscribe/' + id, {
+            fetch('https://vill-du-ha-mitt-nyhetsbrev-be.herokuapp.com/users/subscribe', {
+
 
                 method: 'post',
                 headers: {
