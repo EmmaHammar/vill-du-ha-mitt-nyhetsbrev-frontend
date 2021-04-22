@@ -1,6 +1,9 @@
 # Start project
 git clone: https://github.com/EmmaHammar/vill-du-ha-mitt-nyhetsbrev-backend.git and follow the instructions in that repo's README.md
 
+Frontend repo: https://emmahammar.github.io/vill-du-ha-mitt-nyhetsbrev-frontend/
+Backend repo: https://vill-du-ha-mitt-nyhetsbrev-be.herokuapp.com/
+
 # Inlämningsuppgift: Vill du ha mitt nyhetsbrev?
 Uppgiften går ut på att utveckla ett användargränssnitt där besökare på din webbsida kan regsitrera ett nytt konto och då välja att prenumenera eller inte på ett nyhetsbrev. 
 Sedan skall användaren kunna logga in på sitt skapade konto och ändra sin prenumerationsstatus.
