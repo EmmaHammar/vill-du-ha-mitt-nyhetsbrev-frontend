@@ -168,11 +168,7 @@ function printUserPage(id) {
         articleContainer.innerHTML = userPageTemplate;
         sectionContainer.innerHTML = logOutBtnTemplate;
 
-        let userWelcome = document.getElementById("userWelcome");
-        let userNameSpan = document.getElementById("userNameSpan");
-        let subWrapper = document.getElementById("subWrapper");
         let subStatusWrapper = document.getElementById("subStatusWrapper");
-        let btnWrapper = document.getElementById("btnWrapper");
         let subBtn = document.getElementById("subBtn");
         
         subBtn.addEventListener("click", function() {
