@@ -1,14 +1,3 @@
-$debugging: false; //Ram runt elementen under utveckling: true, annars false.
-div {
-    @if $debugging {
-        outline: 3px solid black;
-    } 
-}
-
 @import "_normalize";
 
 @import "_base.scss";
-
-// @media screen and (min-width: 900px) {
-//     @import "_desktop.scss";
-// }
