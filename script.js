@@ -39,11 +39,9 @@ const logOutBtnTemplate = `<button id="logOutBtn" class="btn-red-nofill">Logga u
 
 //Om localStorage är tomt visas StartPage. Om den inte är tom visas UserPage.
 if (localStorage.getItem("id") === null) {
-    // console.log("ingen är inloggad");
     printStartPage();
 
 } else {
-    // console.log("någon är inloggad");
     let getId = localStorage.getItem("id");
     printUserPage(getId);
 };
@@ -83,7 +81,6 @@ function printStartPage() {
             })
             .then(res => res.json())
             .then(function(res) {
-                // console.log("res /register-routern:", res.code); 
                 if (res.code === "newUser saved") {
                     
                     saveToLS("id", res.id)
@@ -94,7 +91,6 @@ function printStartPage() {
                 }
             });
         } else {
-            // console.log("visa error");
             printErrorMsg(registerMsgContainer);
         }
     });
@@ -104,10 +100,8 @@ function printStartPage() {
         registerMsgContainer.innerHTML = ""; 
         
         let user = {userName: loginUserName.value, password: loginPassword.value};
-        // console.log("user", user);
 
         if ( (loginUserName.value !== "") && (loginPassword.value !== "" ) ) {
-            console.log("fetcha");
 
             fetch('https://vill-du-ha-mitt-nyhetsbrev-be.herokuapp.com/users/userpage', {
 
@@ -119,21 +113,16 @@ function printStartPage() {
             })
             .then(res => res.json())
             .then(function(res) {
-    
-                console.log("res", res);
-    
+        
                 if(res.code == "ok") {
-                    // console.log("user inloggad");
                     saveToLS("id", res.userId);
                     printUserPage(res.userId);
                 } else {
-                    console.log("error");
                     printErrorMsg(loginMsgContainer);
                 }
             });
 
         } else {
-            console.log("visa error");
             printErrorMsg(loginMsgContainer);
         }
     });
@@ -154,7 +143,6 @@ function printUserPage(id) {
 
     .then(data => data.json())
     .then(function(data) {
-        console.log("userName + subscription", data);
 
         //visa prenumerationsstatus
         let subStatus = ""; 
@@ -202,7 +190,6 @@ function printUserPage(id) {
             .then(res => res.json())
             .then(function(res) {
 
-                // console.log("res from MongoDB", res);
                 subStatus = res.subscription;
                 let newSubStatus; 
 
@@ -225,7 +212,6 @@ function logOut() {
     const logOutBtn = document.getElementById("logOutBtn");
 
     logOutBtn.addEventListener("click", function() {
-        console.log("klick logout");
         localStorage.removeItem("id"); 
         printStartPage();
     });
